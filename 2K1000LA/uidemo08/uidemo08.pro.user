@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.1, 2024-07-09T18:49:55. -->
+<!-- Written by QtCreator 4.11.1, 2024-07-09T21:53:12. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -287,9 +287,8 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">uidemo082</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:F:/QT5.14.2/WORK/SUCAI/longxin/uidemo08/uidemo08.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">F:/QT5.14.2/WORK/SUCAI/longxin/uidemo08/uidemo08.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/10372/Desktop/嵌入式/作品提交/代码汇总/2K1000LA/uidemo08/uidemo08.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/10372/Desktop/嵌入式/作品提交/代码汇总/2K1000LA/uidemo08/uidemo08.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -300,7 +299,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">F:/QT5.14.2/WORK/SUCAI/longxin/uidemo08/../bin</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/10372/Desktop/嵌入式/作品提交/代码汇总/2K1000LA/uidemo08/../bin</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
