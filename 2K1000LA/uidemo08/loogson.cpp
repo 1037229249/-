@@ -708,7 +708,7 @@ void loogson::on_stopbtn_clicked()
     ui->startbtn->setEnabled(true);
     ui->stopbtn->setEnabled(false);
 }
-
+//-------------图表部分-----------------
 void loogson::InitGraph1()//X(0-30),Y(0-300)
 {
     QPen blue;
@@ -902,7 +902,7 @@ void loogson::on_stabtn_clicked()
 
     connect(timer1, &QTimer::timeout, this, &loogson::send);
 
-   // startwebserialport();  //龙芯派dtu连接
+    startwebserialport();  //龙芯派dtu连接
 
     timer2->start(500); //图表刷新
     ui->stobtn->setEnabled(true);
@@ -922,8 +922,8 @@ void loogson::on_stabtn_clicked()
         return;
     }
     //设置串口名
-    m_serialPort.setPortName("COM3");//windows测试
-    //m_serialPort.setPortName("ttyS1");
+    //m_serialPort.setPortName("COM3");//windows测试
+    m_serialPort.setPortName("ttyS1");
     //设置波特率
     m_serialPort.setBaudRate(QSerialPort::Baud115200);
     //设置数据位

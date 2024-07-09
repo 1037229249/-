@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="res/style.css">
+<title>WebSocket Client</title>
+<style>
+    .logo {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 80px;
+        height: auto;
+    }
+    .logo2 {
+        position: absolute;
+        top: 0px;
+        left: 80px;
+        width: 80px;
+        height: auto;
+    }
+    #alertContainer {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background-color: blue;
+        border: 1px solid black;
+        padding: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        display: none; /* 初始隐藏 */
+    }
+    #alertContainer h3 {
+        margin: 0;
+        display: inline-block;
+    }
+    #alertContainer .close-btn {
+        float: right;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .iframe-container {
+        position: fixed;
+        top: 50px;
+        right: 10px;
+        width: 800px; /* 根据需要调整尺寸 */
+        height: 600px; /* 根据需要调整尺寸 */
+        border: none;
+        display: none; /* 初始隐藏 */
+    }
+</style>
+</head>
+<body class="fill-parent" dg-chart-auto-resize="true" dg-chart-options="{title:{show:false},legend:{top:0},grid:{top:25}}" dg-chart-theme="{color:'#F0F0F0',actualBackgroundColor:'#000c3b'}">
+<div class="head">
+    <div class="title">
+        <div class="title-left"></div>
+        <div class="title-value"><label>龙芯分布式物联网数据可视化终端</label></div>
+        <div class="title-right"></div>
+    </div>
+</div>
+<div class="content">
+    <div class="layout layout-left-top">
+        <div class="panel">
+            <div class="title"><label>设备1温湿度状态</label></div>
+            <div class="chart" dg-chart-widget=""></div>
+            <div style="width:100%;height:100%;" dg-chart-widget="81b43c219190690beb66"><!--房间状态显示--></div>
+        </div>
+    </div>
+    <div class="layout layout-left-center">
+        <div class="panel">
+            <div class="title"><label>设备1电压电流状态</label></div>
+            <div class="chart" dg-chart-widget="22acd6f7d190691066b3"></div>
+        </div>
+    </div>
+    <div class="layout layout-left-bottom">
+        <div class="panel">
+            <div class="title"><label>设备1功率状态</label></div>
+            <div class="chart" dg-chart-widget="8e2ba5603190691cce11"></div>
+        </div>
+    </div>
+    <div class="layout layout-center-top">
+        <div class="panel" dg-chart-widget="fb2888c3a1907c2ff14d">
+            <div class="chart chart-left" dg-chart-widget=""></div>
+            <div class="chart chart-center"></div>
+            <div class="chart chart-right" dg-chart-widget=""></div>
+        </div>
+    </div>
+    <div class="layout layout-center-bottom">
+        <div class="panel border-all">
+            <div class="chart" dg-chart-widget="">
+                <button id="toggleVideoButton">显示监控画面</button>
+                <img id="videoStream" src="http://172.20.10.3/mjpeg/1" alt="Video Stream" style="display:none;">
+            </div>
+            <div class="border-foot"></div>
+        </div>
+    </div>
+    <div class="layout layout-right-top">
+        <div class="panel">
+            <div class="title"><label>设备2温湿度状态</label></div>
+            <div class="chart" dg-chart-widget=""></div>
+            <div style="width:100%;height:100%;" dg-chart-widget="f683cb254190690e0353"><!--房间数据展示--></div>
+        </div>
+    </div>
+    <div class="layout layout-right-center">
+        <div class="panel">
+            <div class="title"><label>设备2电压电流状态</label></div>
+            <div class="chart" dg-chart-widget="2b351ca3f1906912d5d1"></div>
+        </div>
+    </div>
+    <div class="layout layout-right-bottom">
+        <div class="panel">
+            <div class="title"><label>设备2功率状态</label></div>
+            <div class="chart" dg-chart-widget="b4d4b97fd190691dc0fe"></div>
+        </div>
+    </div>
+</div>
+<img src="logo.png" class="logo" alt="Logo">
+<img src="logo2.png" class="logo2" alt="Logo 2">
+
+<!-- 警报消息容器 -->
+<div id="alertContainer">
+    <span class="close-btn" onclick="closeAlert()">x</span>
+    <h3>Alerts</h3>
+    <ul id="alertList"></ul>
+</div>
+
+<!-- 嵌入设备控制页面 -->
+<button id="toggleIframeButton" style="position: fixed; top: 10px; right: 10px;">设备控制</button>
+<iframe class="iframe-container" id="embeddedPage" src="https://www.vip3070.com/share_list.aspx?dev=53557%7C0"></iframe>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    let ws;
+    const alertContainer = document.getElementById('alertContainer');
+    const alertList = document.getElementById('alertList');
+    const toggleVideoButton = document.getElementById('toggleVideoButton');
+    const videoStream = document.getElementById('videoStream');
+    const toggleIframeButton = document.getElementById('toggleIframeButton');
+    const embeddedPage = document.getElementById('embeddedPage');
+
+    function connectWebSocket() {
+        ws = new WebSocket('ws://127.0.0.1:3000');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'alert') {
+                console.log('Alerts:', data.alerts);
+                alertList.innerHTML = ''; // 清空旧的警报信息
+                data.alerts.forEach(alert => {
+                    const li = document.createElement('li');
+                    li.textContent = alert;
+                    alertList.appendChild(li);
+                });
+                alertContainer.style.display = 'block'; // 显示警报容器
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed, attempting to reconnect...');
+            setTimeout(connectWebSocket, 5000); // 尝试每5秒重新连接一次
+        };
+    }
+
+    connectWebSocket();
+
+    window.addEventListener('beforeunload', () => {
+        ws.close();
+    });
+
+    // 控制按钮逻辑
+    toggleVideoButton.addEventListener('click', () => {
+        if (videoStream.style.display === 'none') {
+            videoStream.style.display = 'block';
+            toggleVideoButton.textContent = '隐藏监控画面';
+            console.log('显示监控画面');
+        } else {
+            videoStream.style.display = 'none';
+            toggleVideoButton.textContent = '显示监控画面';
+            console.log('隐藏监控画面');
+        }
+    });
+
+    toggleIframeButton.addEventListener('click', () => {
+        if (embeddedPage.style.display === 'none') {
+            embeddedPage.style.display = 'block';
+            toggleIframeButton.textContent = '隐藏设备控制';
+            console.log('显示设备控制页面');
+        } else {
+            embeddedPage.style.display = 'none';
+            toggleIframeButton.textContent = '设备控制';
+            console.log('隐藏设备控制页面');
+        }
+    });
+});
+
+function closeAlert() {
+    document.getElementById('alertContainer').style.display = 'none';
+    console.log('关闭警报容器');
+}
+</script>
+</body>
+</html>
