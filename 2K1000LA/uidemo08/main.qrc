@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/fontawesome-webfont.ttf</file>
+        <file>image/main_about.png</file>
+        <file>image/main_company.png</file>
+        <file>image/main_config.png</file>
+        <file>image/main_data.png</file>
+        <file>image/main_exit.png</file>
+        <file>image/main_help.png</file>
+        <file>image/main_main.png</file>
+        <file>image/main_person.png</file>
+        <file>image/loongson.png</file>
+        <file>image/longxinlogo.png</file>
+        <file>image/QRS .png</file>
+        <file>image/login.png</file>
+        <file>image/checkbox_checked.png</file>
+        <file>image/checkbox_unchecked.png</file>
+        <file>image/user.png</file>
+        <file>image/temp.png</file>
+        <file>image/hum.png</file>
+        <file>image/smoke.png</file>
+        <file>image/helpback.png</file>
+    </qresource>
+</RCC>
